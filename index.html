@@ -22,7 +22,7 @@
            .attr("x", 50)
            .attr("y", 50)
            .attr("font-size", "24px")
-           .text("GC Content by ID");
+           .text("GC_Content by ID");
 
         var xScale = d3.scaleBand().range([0, width]).padding(0.4),
             yScale = d3.scaleLinear().range([height, 0]);
@@ -50,16 +50,16 @@
              .text("ID");
 
             g.append("g")
-              .call(d3.axisLeft(yScale).tickFormat(function(d){
-                return d;
-              }).ticks(10))
+              .call(d3.axisLeft(yScale))
               .append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", 6)
               .attr("dy", "-5.1em")
               .attr("text-anchor", "end")
               .attr("stroke", "black")
-              .text("GC Content");
+              .text("GC Content")
+              .attr("transform", "rotate(-90)")
+
 
 
             g.selectAll(".bar")

@@ -22,7 +22,7 @@
            .attr("x", 50)
            .attr("y", 50)
            .attr("font-size", "24px")
-           .text("GC_Content by ID");
+           .text("GC Content by ID");
 
         var xScale = d3.scaleBand().range([0, width]).padding(0.4),
             yScale = d3.scaleLinear().range([height, 0]);
@@ -67,9 +67,9 @@
              .enter().append("rect")
              .attr("class", "bar")
              .attr("x", function(d) { return xScale(d.ID); })
-             .attr("y", function(d) { return yScale(d.value); })
+             .attr("y", function(d) { return yScale(d.GC_Content); })
              .attr("width", xScale.bandwidth())
-             .attr("height", function(d) { return height - yScale(d.value); });
+             .attr("height", function(d) { return height - yScale(d.GC_Content); });
         });
     </script>
 </body>

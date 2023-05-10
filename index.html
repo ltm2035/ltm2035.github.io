@@ -9,6 +9,20 @@
             transform: rotate(-45deg);
             text-anchor: end;
         }
+        .svg1-tooltip {
+            background-color: #fff;
+            box-shadow: 0 0 5px #999999;
+            color: #333;
+            display: inline-block;
+            font-size: 12px;
+            left: 0;
+            padding: 10px;
+            position: absolute;
+            text-align: center;
+            top: 0;
+            visibility: hidden;
+            z-index: 9999;
+        }
     </style>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
@@ -72,9 +86,44 @@
              .attr("x", function(d) { return xScale(d.ID); })
              .attr("y", function(d) { return yScale(d.GC_Content); })
              .attr("width", xScale.bandwidth())
-             .attr("height", function(d) { return height - yScale(d.GC_Content); });
-        });
-    </script>
-</body>
-</html>
+             .attr("height", function(d) { return height - yScale(d.GC_Content); })
+             .on("mouseover", function(d) {
+                 d3.select(this)
+                    .attr('stroke-width', '2') 
+                    .attr("stroke
+// create the tooltip div and set its style
+var tooltip = d3.select("body")
+  .append("div")
+  .attr("class", "tooltip")
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("visibility", "hidden")
+  .style("background-color", "white")
+  .style("border", "solid")
+  .style("border-width", "1px")
+  .style("border-radius", "5px")
+  .style("padding", "10px");
+
+// select all the bars and attach event listeners for the tooltip
+g.selectAll(".bar")
+  .data(data)
+  .enter().append("rect")
+  .attr("class", "bar")
+  .attr("x", function(d) { return xScale(d.ID); })
+  .attr("y", function(d) { return yScale(d.GC_Content); })
+  .attr("width", xScale.bandwidth())
+  .attr("height", function(d) { return height - yScale(d.GC_Content); })
+  .on("mouseover", function(d) {
+    // show the tooltip and update its contents
+    tooltip.style("visibility", "visible")
+           .html("ID: " + d.ID + "<br>" + "GC Content: " + d.GC_Content);
+  })
+  .on("mousemove", function() {
+    // move the tooltip along with the mouse
+    tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+  })
+  .on("mouseout", function() {
+    // hide the tooltip
+    tooltip.style("visibility", "hidden");
+  });
 

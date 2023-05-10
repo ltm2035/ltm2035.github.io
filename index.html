@@ -50,7 +50,7 @@
              .text("ID");
 
             g.append("g")
-              .call(d3.axisLeft(yScale))
+              .call(d3.axisLeft(yScale).ticks(44))
               .append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", 6)
@@ -59,6 +59,7 @@
               .attr("stroke", "black")
               .text("GC Content")
               .attr("transform", "rotate(-90)")
+
 
 
 

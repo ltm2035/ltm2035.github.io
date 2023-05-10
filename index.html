@@ -5,6 +5,10 @@
         .bar {
             fill: steelblue;
         }
+        .axis-x text {
+            transform: rotate(-45deg);
+            text-anchor: end;
+        }
     </style>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
@@ -40,6 +44,7 @@
             yScale.domain([0, d3.max(data, function(d) { return d.GC_Content; })]);
 
             g.append("g")
+             .attr("class", "axis-x")
              .attr("transform", "translate(0," + height + ")")
              .call(d3.axisBottom(xScale))
              .append("text")
@@ -59,9 +64,6 @@
               .attr("stroke", "black")
               .text("GC Content")
               .attr("transform", "rotate(-90)")
-
-
-
 
             g.selectAll(".bar")
              .data(data)

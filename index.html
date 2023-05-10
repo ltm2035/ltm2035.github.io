@@ -24,11 +24,11 @@ var svg = d3.select("#my_dataviz")
           "translate(" + margin.left + "," + margin.top + ")");
 
 // get the data
-d3.csv("C:\\Users\\Leora\\OneDrive - rit.edu\\Comp\\Corona\\Final_Project.csv", function(data) {
+d3.csv("path/to/your/csv/file.csv", function(data) {
 
   // X axis: scale and draw:
   var x = d3.scaleLinear()
-      .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+      .domain([0, d3.max(data, function(d) { return +d.gc_content; })])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
       .range([0, width]);
   svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -36,7 +36,7 @@ d3.csv("C:\\Users\\Leora\\OneDrive - rit.edu\\Comp\\Corona\\Final_Project.csv", 
 
   // set the parameters for the histogram
   var histogram = d3.histogram()
-      .value(function(d) { return d.price; })   // I need to give the vector of value
+      .value(function(d) { return d.gc_content; })   // I need to give the vector of value
       .domain(x.domain())  // then the domain of the graphic
       .thresholds(x.ticks(70)); // then the numbers of bins
 
@@ -55,11 +55,5 @@ d3.csv("C:\\Users\\Leora\\OneDrive - rit.edu\\Comp\\Corona\\Final_Project.csv", 
       .data(bins)
       .enter()
       .append("rect")
-        .attr("x", 1)
-        .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
-        .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
-        .attr("height", function(d) { return height - y(d.length); })
-        .style("fill", "#69b3a2")
+       
 
-});
-</script>

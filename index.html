@@ -21,7 +21,7 @@
        .attr("x", 50)
        .attr("y", 50)
        .attr("font-size", "24px")
-       .text("XYZ Foods Stock Price")
+       .text("GC Content")
 
     var xScale = d3.scaleBand().range([0, width]).padding(0.4),
         yScale = d3.scaleLinear().range([height, 0]);
@@ -32,6 +32,12 @@
     d3.csv("C:\\Users\\Leora\\OneDrive - rit.edu\\Comp\\Corona\\Final_Project.csv", function(error, data) {
         if (error) {
             throw error;
+            svg.append("text")
+               .attr("transform", "translate(100,0)")
+               .attr("x", 50)
+               .attr("y", 50)
+               .attr("font-size", "24px")
+               .text("Error")
         }
 
         xScale.domain(data.map(function(d) { return d.year; }));

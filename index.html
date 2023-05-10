@@ -72,9 +72,11 @@
              .attr("x", function(d) { return xScale(d.ID); })
              .attr("y", function(d) { return yScale(d.GC_Content); })
              .attr("width", xScale.bandwidth())
-             .attr("height", function(d) { return height - yScale(d.GC_Content); });
+             .attr("height", function(d) { return height - yScale(d.GC_Content); })
+             .attr("title", function(d) { return "GC Content: " + d.GC_Content; });
         });
     </script>
 </body>
 </html>
+
 

@@ -9,20 +9,6 @@
             transform: rotate(-45deg);
             text-anchor: end;
         }
-        .svg1-tooltip {
-            background-color: #fff;
-            box-shadow: 0 0 5px #999999;
-            color: #333;
-            display: inline-block;
-            font-size: 12px;
-            left: 0;
-            padding: 10px;
-            position: absolute;
-            text-align: center;
-            top: 0;
-            visibility: hidden;
-            z-index: 9999;
-        }
     </style>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
@@ -40,7 +26,7 @@
            .attr("x", 50)
            .attr("y", 50)
            .attr("font-size", "24px")
-           .text("GC Content by ID");
+           .text("GC_Content by ID");
 
         var xScale = d3.scaleBand().range([0, width]).padding(0.4),
             yScale = d3.scaleLinear().range([height, 0]);
@@ -79,28 +65,16 @@
               .text("GC Content")
               .attr("transform", "rotate(-90)")
 
-            // select all the bars and attach event listeners for the tooltip
             g.selectAll(".bar")
-              .data(data)
-              .enter().append("rect")
-              .attr("class", "bar")
-              .attr("x", function(d) { return xScale(d.ID); })
-              .attr("y", function(d) { return yScale(d.GC_Content); })
-              .attr("width", xScale.bandwidth())
-              .attr("height", function(d) { return height - yScale(d.GC_Content); })
-              .on("mouseover", function(d) {
-                // show the tooltip and update its contents
-                tooltip.style("visibility", "visible")
-                       .html("ID: " + d.ID + "<br>" + "GC Content: " + d.GC_Content);
-  })
-  .on("mousemove", function() {
-    // move the tooltip along with the mouse
-    tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
-  })
-  .on("mouseout", function() {
-    // hide the tooltip
-    tooltip.style("visibility", "hidden");
-  });
-
-
+             .data(data)
+             .enter().append("rect")
+             .attr("class", "bar")
+             .attr("x", function(d) { return xScale(d.ID); })
+             .attr("y", function(d) { return yScale(d.GC_Content); })
+             .attr("width", xScale.bandwidth())
+             .attr("height", function(d) { return height - yScale(d.GC_Content); });
+        });
+    </script>
+</body>
+</html>
 

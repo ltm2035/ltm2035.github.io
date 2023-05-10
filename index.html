@@ -1,83 +1,65 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>GC Content Histogram</title>
-  <script src="https://d3js.org/d3.v6.min.js"></script>
-  <style>
-    /* Add some CSS styling */
-    body {
-      font-family: sans-serif;
-      font-size: 14px;
-    }
-    .bar {
-      fill: steelblue;
-    }
-    .bar:hover {
-      fill: brown;
-    }
-    .axis--x path {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-  <h1>GC Content Histogram</h1>
-  <svg width="960" height="500"></svg>
-  <script>
-    // Load the data from the CSV file
-    d3.csv("C:\\Users\\Leora\\OneDrive - rit.edu\\Comp\\Corona\\Final_Project.csv").then(function(data) {
-      // Convert the GC content values to numbers
-      data.forEach(function(d) {
-        d.gc_con = +d.gc_con;
-      });
+<meta charset="utf-8">
 
-      // Set the dimensions of the SVG
-      var margin = {top: 20, right: 20, bottom: 30, left: 40},
-          width = 960 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
 
-      // Create the x and y scales
-      var x = d3.scaleLinear()
-          .domain([0, d3.max(data, function(d) { return d.gc_con; })])
-          .range([0, width]);
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
 
-      var bins = d3.histogram()
-          .value(function(d) { return d.gc_con; })
-          .domain(x.domain())
-          .thresholds(x.ticks(20))
-        (data);
+<script>
 
-      var y = d3.scaleLinear()
-          .domain([0, d3.max(bins, function(d) { return d.length; })])
-          .range([height, 0]);
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 30, left: 40},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
-      // Create the SVG and add the x and y axes
-      var svg = d3.select("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
 
-      svg.append("g")
-          .attr("class", "axis axis--x")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x));
+// get the data
+d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", function(data) {
 
-      svg.append("g")
-          .attr("class", "axis axis--y")
-          .call(d3.axisLeft(y).ticks(10));
+  // X axis: scale and draw:
+  var x = d3.scaleLinear()
+      .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+      .range([0, width]);
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
 
-      // Add the bars to the histogram
-      svg.selectAll(".bar")
-          .data(bins)
-        .enter().append("rect")
-          .attr("class", "bar")
-          .attr("x", 1)
-          .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
-          .attr("width", function(d) { return x(d.x1) - x(d.x0) - 1; })
-          .attr("height", function(d) { return height - y(d.length); });
-    });
-  </script>
-</body>
-</html>
+  // set the parameters for the histogram
+  var histogram = d3.histogram()
+      .value(function(d) { return d.price; })   // I need to give the vector of value
+      .domain(x.domain())  // then the domain of the graphic
+      .thresholds(x.ticks(70)); // then the numbers of bins
+
+  // And apply this function to data to get the bins
+  var bins = histogram(data);
+
+  // Y axis: scale and draw:
+  var y = d3.scaleLinear()
+      .range([height, 0]);
+      y.domain([0, d3.max(bins, function(d) { return d.length; })]);   // d3.hist has to be called before the Y axis obviously
+  svg.append("g")
+      .call(d3.axisLeft(y));
+
+  // append the bar rectangles to the svg element
+  svg.selectAll("rect")
+      .data(bins)
+      .enter()
+      .append("rect")
+        .attr("x", 1)
+        .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+        .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
+        .attr("height", function(d) { return height - y(d.length); })
+        .style("fill", "#69b3a2")
+
+});
+</script>
